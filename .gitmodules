@@ -1,0 +1,4 @@
+[submodule "xgboost"]
+	path = xgboost
+	url = https://github.com/hirofumi/xgboost.git
+	ignore = dirty

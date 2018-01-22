@@ -1,0 +1,12 @@
+FROM fedora:27
+
+ENV JAVA_OPTS -XX:MaxRAMFraction=1 -XX:MinRAMFraction=1 -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
+ENV LC_NUMERIC C
+
+RUN curl https://bintray.com/sbt/rpm/rpm | tee /etc/yum.repos.d/bintray-sbt-rpm.repo \
+    && yum -y install java-1.8.0-openjdk-devel python sbt
+
+ADD . /root
+WORKDIR /root
+
+CMD ["sbt", "test"]
