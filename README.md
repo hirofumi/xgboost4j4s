@@ -1,6 +1,8 @@
 # xgboost4j4s
 
-XGBoost4J with cross-version suffixes
+[![Scaladex](https://maven-badges.herokuapp.com/maven-central/com.github.hirofumi/xgboost4j_2.11/badge.svg)](https://index.scala-lang.org/hirofumi/xgboost4j4s/xgboost4j)
+
+XGBoost4J with cross-version suffix
 
 ## Development
 
