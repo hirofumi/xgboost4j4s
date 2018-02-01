@@ -45,10 +45,10 @@ release: clean doc jni
 	sbt release
 
 publish-local: doc jni
-	sbt publishLocal
+	sbt +publishLocal
 
 publish-snapshot: doc jni
-	sbt publishSigned
+	sbt +publishSigned
 
 inspect: inspect-dylib inspect-so
 

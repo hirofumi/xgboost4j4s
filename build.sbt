@@ -18,16 +18,37 @@ lazy val `xgboost-jvm` =
       makeDoc   := "make doc".!,
       makeTest  := "make test".!
     )
+    .settings(
+      releaseCrossBuild :=
+        true,
+      releaseProcess := Seq[ReleaseStep](
+        checkSnapshotDependencies,
+        inquireVersions,
+        runClean,
+        runTest,
+        setReleaseVersion,
+        commitReleaseVersion,
+        tagRelease,
+        releaseStepCommand("publishSigned"),
+        setNextVersion,
+        commitNextVersion,
+        releaseStepCommand("sonatypeReleaseAll"),
+        pushChanges
+      )
+    )
 
 lazy val xgboost4j =
   project
     .in(file("xgboost/jvm-packages/xgboost4j"))
     .settings(settings ++ toPublish)
     .settings(
+      crossScalaVersions += "2.12.4"
+    )
+    .settings(
       libraryDependencies ++= Seq(
-        "com.typesafe.akka" %% "akka-actor"   % "2.3.11",
-        "com.typesafe.akka" %% "akka-testkit" % "2.3.11" % Test,
-        "junit"             %  "junit"        % "4.11"   % Test
+        "com.typesafe.akka" %% "akka-actor"   % akkaVersion.value,
+        "com.typesafe.akka" %% "akka-testkit" % akkaVersion.value % Test,
+        "junit"             %  "junit"        % "4.11"            % Test
       )
     )
 
@@ -74,13 +95,17 @@ lazy val `xgboost4j-spark` =
 
 lazy val settings =
   Seq(
-    crossScalaVersions  := Seq("2.11.8"),
-    javacOptions       ++= Seq("-source", "1.7", "-target", "1.7"),
-    licenses            := Seq("Apache-2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0.txt")),
-    organization        := "com.github.hirofumi",
-    scalaVersion        := "2.11.8",
-    scalacOptions      ++= Seq("-deprecation", "-encoding", "UTF-8", "-feature", "-target:jvm-1.7"),
-    testOptions         += Tests.Argument(TestFrameworks.ScalaTest, "-oDF")
+    akkaVersion                      := (if (isScala211.value) "2.3.11" else "2.4.20"),
+    crossScalaVersions               := Seq("2.11.8"),
+    isScala211                       := (scalaBinaryVersion.value == "2.11"),
+    javacOptions                    ++= Seq("-source", "1.7", "-target", "1.7"),
+    licenses                         := Seq("Apache-2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0.txt")),
+    organization                     := "com.github.hirofumi",
+    scalaVersion                     := "2.11.8",
+    scalacOptions                   ++= Seq("-deprecation", "-encoding", "UTF-8", "-feature"),
+    scalacOptions                    += (if (isScala211.value) "-target:jvm-1.7" else "-target:jvm-1.8"),
+    scalacOptions in (Compile, doc) ++= (if (isScala211.value) Nil else Seq("-no-java-comments")), // https://github.com/scala/scala-dev/issues/249#issuecomment-255863118
+    testOptions                      += Tests.Argument(TestFrameworks.ScalaTest, "-oDF")
   ) ++ Seq(
     baseDirectory in (Test, test) := (baseDirectory in ThisBuild).value / "xgboost" / "jvm-packages",
     fork          in (Test, test) := true
@@ -89,20 +114,6 @@ lazy val settings =
       "com.esotericsoftware.kryo" %  "kryo"            % "2.21",
       "commons-logging"           %  "commons-logging" % "1.2",
       "org.scalatest"             %% "scalatest"       % "3.0.0" % Test
-    ),
-    releaseProcess := Seq[ReleaseStep](
-      checkSnapshotDependencies,
-      inquireVersions,
-      runClean,
-      runTest,
-      setReleaseVersion,
-      commitReleaseVersion,
-      tagRelease,
-      releaseStepCommand("publishSigned"),
-      setNextVersion,
-      commitNextVersion,
-      releaseStepCommand("sonatypeReleaseAll"),
-      pushChanges
     ),
     sonatypeProjectHosting := Some(
       GithubHosting("hirofumi", "xgboost4j4s", "hirofummy@gmail.com")
@@ -124,9 +135,10 @@ lazy val toPublish =
     publishTo                  := sonatypePublishTo.value
   )
 
+lazy val akkaVersion = settingKey[String]("akka version")
+lazy val isScala211  = settingKey[Boolean]("whether or not scalaBinaryVersion is 2.11")
+
 lazy val makeClean = taskKey[Int]("make clean")
 lazy val makeDoc   = taskKey[Int]("make doc")
 lazy val makeJni   = taskKey[Int]("make jni")
 lazy val makeTest  = taskKey[Int]("make test")
-
-notToPublish
