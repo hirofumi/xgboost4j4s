@@ -11,11 +11,15 @@ LIBXGBOOST4J_DYLIB=$(RESOURCES_LIB)/libxgboost4j.dylib
 LIBXGBOOST4J_SO=$(RESOURCES_LIB)/libxgboost4j.so
 RUN_ON_DOCKER=(docker image inspect xgboost4j4s-jni > /dev/null || docker build . -t xgboost4j4s-jni) && docker run --rm -v "`pwd`/$(RESOURCES_METAINF):/root/$(RESOURCES_METAINF)" -v "`pwd`/$(RESOURCES_LIB):/root/$(RESOURCES_LIB)" -i xgboost4j4s-jni
 
+COURSIER_CACHE=$$(pwd)/docker-cache/.coursier/cache
 IVY2_CACHE=$$(pwd)/docker-cache/.ivy2/cache
 SBT_CACHE=$$(pwd)/docker-cache/.sbt
 
+COURSIER_CACHE_VOLUME=$$(if [ -n "$(COURSIER_CACHE)" ]; then echo -v "$(COURSIER_CACHE):/root/.coursier/cache"; else echo -n ''; fi)
 IVY2_CACHE_VOLUME=$$(if [ -n "$(IVY2_CACHE)" ]; then echo -v "$(IVY2_CACHE):/root/.ivy2/cache"; else echo -n ''; fi)
 SBT_CACHE_VOLUME=$$(if [ -n "$(SBT_CACHE)" ]; then echo -v "$(SBT_CACHE):/root/.sbt"; else echo -n ''; fi)
+
+CACHE_VOLUMES=$(COURSIER_CACHE_VOLUME) $(IVY2_CACHE_VOLUME) $(SBT_CACHE_VOLUME)
 
 .PHONY: \
   test test-mac test-linux test-fedora test-ubuntu \
@@ -35,11 +39,11 @@ test-linux: test-fedora test-ubuntu
 
 test-fedora: jni-so
 	docker build . -f Dockerfile.test-fedora -t xgboost4j4s-test-fedora
-	docker run --rm $(IVY2_CACHE_VOLUME) $(SBT_CACHE_VOLUME) -i xgboost4j4s-test-fedora
+	docker run --rm $(CACHE_VOLUMES) -i xgboost4j4s-test-fedora
 
 test-ubuntu: jni-so
 	docker build . -f Dockerfile.test-ubuntu -t xgboost4j4s-test-ubuntu
-	docker run --rm $(IVY2_CACHE_VOLUME) $(SBT_CACHE_VOLUME) -i xgboost4j4s-test-ubuntu
+	docker run --rm $(CACHE_VOLUMES) -i xgboost4j4s-test-ubuntu
 
 release: clean doc jni
 	sbt release

@@ -8,7 +8,7 @@ lazy val `xgboost-jvm` =
     .in(file("."))
     .aggregate(
       xgboost4j,
-      // `xgboost4j-example`,
+      `xgboost4j-example`,
       `xgboost4j-flink`,
       `xgboost4j-spark`
     )
@@ -52,18 +52,19 @@ lazy val xgboost4j =
       )
     )
 
-/* pom.xml of flink-ml 0.10.2 seems to cause a "Conflicting cross-version suffixes" error
 lazy val `xgboost4j-example` =
   project
     .in(file("xgboost/jvm-packages/xgboost4j-example"))
     .dependsOn(`xgboost4j-flink`, `xgboost4j-spark`)
     .settings(settings ++ notToPublish)
     .settings(
+      fork in run := true
+    )
+    .settings(
       libraryDependencies ++= Seq(
         "org.apache.spark" %% "spark-mllib" % "2.1.0" % Provided
       )
     )
-*/
 
 lazy val `xgboost4j-flink` =
   project
