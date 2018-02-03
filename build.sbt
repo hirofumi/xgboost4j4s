@@ -98,7 +98,7 @@ lazy val settings =
   Seq(
     akkaVersion                      := (if (isScala211.value) "2.3.11" else "2.4.20"),
     crossScalaVersions               := Seq("2.11.8"),
-    envVars                          += "LC_NUMERIC" -> "C",
+    envVars                         ++= Map("LC_ALL" -> "", "LC_NUMERIC" -> "C"),
     isScala211                       := (scalaBinaryVersion.value == "2.11"),
     javacOptions                    ++= Seq("-source", "1.7", "-target", "1.7"),
     licenses                         := Seq("Apache-2.0" -> url("https://www.apache.org/licenses/LICENSE-2.0.txt")),

@@ -1,6 +1,7 @@
 FROM ubuntu:16.04
 
 ENV JAVA_OPTS -XX:MaxRAMFraction=1 -XX:MinRAMFraction=1 -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
+ENV LC_ALL=
 ENV LC_NUMERIC C
 
 RUN echo 'deb http://dl.bintray.com/sbt/debian /' > /etc/apt/sources.list.d/sbt.list \

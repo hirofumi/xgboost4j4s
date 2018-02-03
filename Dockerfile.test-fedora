@@ -1,6 +1,7 @@
 FROM fedora:27
 
 ENV JAVA_OPTS -XX:MaxRAMFraction=1 -XX:MinRAMFraction=1 -XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap
+ENV LC_ALL=
 ENV LC_NUMERIC C
 
 RUN curl https://bintray.com/sbt/rpm/rpm | tee /etc/yum.repos.d/bintray-sbt-rpm.repo \
