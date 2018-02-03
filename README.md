@@ -16,6 +16,11 @@ libraryDependencies += "com.github.hirofumi" %% "xgboost4j-flink" % "0.7.0-p2"
 libraryDependencies += "com.github.hirofumi" %% "xgboost4j-spark" % "0.7.0-p2"
 ```
 
+### Note
+
+You should use the above libraries with `LC_NUMERIC=C` (which is not overridden by `LC_ALL`) on macOS.
+Otherwise multi-threading may cause a segmentation fault.
+
 ## Development
 
 ### Prerequisites
