@@ -1,0 +1,40 @@
+language: java
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      sudo: required
+      services:
+        - docker
+      env: TASK=test-fedora
+    - os: linux
+      dist: trusty
+      sudo: required
+      services:
+        - docker
+      env: TASK=test-ubuntu
+    - os: osx
+      osx_image: xcode9.2
+      env: TASK=test-mac
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then docker pull openjdk:8-jdk  ; fi
+  - if [[ "$TASK" == "test-fedora"     ]]; then docker pull fedora:27      ; fi
+  - if [[ "$TASK" == "test-ubuntu"     ]]; then docker pull ubuntu:16.04   ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx"   ]]; then brew update                ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx"   ]]; then rm '/usr/local/include/c++'; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx"   ]]; then brew install gcc@7 sbt     ; fi
+script:
+  - make "$TASK"
+before_cache:
+  - find $HOME/.ivy2        -name "ivydata-*.properties" -delete
+  - find $HOME/.sbt         -name "*.lock"               -delete
+  - find docker-cache/.ivy2 -name "ivydata-*.properties" -delete
+  - find docker-cache/.sbt  -name "*.lock"               -delete
+cache:
+  directories:
+    - $HOME/.coursier/cache
+    - $HOME/.ivy2/cache
+    - $HOME/.sbt/boot
+    - docker-cache/.coursier/cache
+    - docker-cache/.ivy2/cache
+    - docker-cache/.sbt/boot

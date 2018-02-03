@@ -5,11 +5,11 @@ CXX="$(GCC_HOME)/bin/g++-$(GCC_VERSION)"
 CFLAGS="-fvisibility=hidden -static-libgcc -I$(GCC_HOME)/include"
 CXXFLAGS="-fvisibility=hidden -fvisibility-inlines-hidden -static-libgcc -static-libstdc++"
 LIBGOMP_A="$$(cd $$(dirname $$($(CXX) -print-file-name=libgomp.a)); pwd)/libgomp.a"
-RESOURCES_METAINF=xgboost/jvm-packages/xgboost4j/src/main/resources/META-INF
-RESOURCES_LIB=xgboost/jvm-packages/xgboost4j/src/main/resources/lib
-LIBXGBOOST4J_DYLIB=$(RESOURCES_LIB)/libxgboost4j.dylib
-LIBXGBOOST4J_SO=$(RESOURCES_LIB)/libxgboost4j.so
-RUN_ON_DOCKER=(docker image inspect xgboost4j4s-jni > /dev/null || docker build . -t xgboost4j4s-jni) && docker run --rm -v "`pwd`/$(RESOURCES_METAINF):/root/$(RESOURCES_METAINF)" -v "`pwd`/$(RESOURCES_LIB):/root/$(RESOURCES_LIB)" -i xgboost4j4s-jni
+RESOURCES=xgboost/jvm-packages/xgboost4j/src/main/resources
+SPARK_TEST_RESOURCES=xgboost/jvm-packages/xgboost4j-spark/src/test/resources
+LIBXGBOOST4J_DYLIB=$(RESOURCES)/lib/libxgboost4j.dylib
+LIBXGBOOST4J_SO=$(RESOURCES)/lib/libxgboost4j.so
+RUN_ON_DOCKER=(docker image inspect xgboost4j4s-jni > /dev/null || docker build . -t xgboost4j4s-jni) && docker run --rm -v "`pwd`/$(RESOURCES):/root/$(RESOURCES)" -v "`pwd`/$(SPARK_TEST_RESOURCES):/root/$(SPARK_TEST_RESOURCES)" -i xgboost4j4s-jni
 
 COURSIER_CACHE=$$(pwd)/docker-cache/.coursier/cache
 IVY2_CACHE=$$(pwd)/docker-cache/.ivy2/cache
@@ -33,16 +33,20 @@ CACHE_VOLUMES=$(COURSIER_CACHE_VOLUME) $(IVY2_CACHE_VOLUME) $(SBT_CACHE_VOLUME)
 test: test-mac test-linux
 
 test-mac: jni-dylib
-	LC_NUMERIC=C sbt test
+	LC_NUMERIC=C sbt +test
 
 test-linux: test-fedora test-ubuntu
 
 test-fedora: jni-so
 	docker build . -f Dockerfile.test-fedora -t xgboost4j4s-test-fedora
+	ls -lat "$(RESOURCES)"
+	ls -lat "$(RESOURCES)/lib"
 	docker run --rm $(CACHE_VOLUMES) -i xgboost4j4s-test-fedora
 
 test-ubuntu: jni-so
 	docker build . -f Dockerfile.test-ubuntu -t xgboost4j4s-test-ubuntu
+	ls -lat "$(RESOURCES)"
+	ls -lat "$(RESOURCES)/lib"
 	docker run --rm $(CACHE_VOLUMES) -i xgboost4j4s-test-ubuntu
 
 release: clean doc jni
@@ -72,7 +76,7 @@ clean: clean-doc clean-dylib clean-so
 	-docker rmi xgboost4j4s-test-ubuntu
 
 clean-doc:
-	rm -rf "$(RESOURCES_METAINF)"
+	rm -rf "$(RESOURCES)/META-INF"
 
 clean-dylib:
 	sbt +clean
@@ -80,10 +84,10 @@ clean-dylib:
 	rm -rf xgboost/build
 
 clean-so:
-	-rm "$(RESOURCES_LIB)/libgomp.so"
+	-rm "$(RESOURCES)/lib/libgomp.so"
 	-rm "$(LIBXGBOOST4J_SO)"
 
-doc: $(RESOURCES_METAINF)/xgboost/LICENSE $(RESOURCES_METAINF)/g++/copyright
+doc: $(RESOURCES)/META-INF/xgboost/LICENSE $(RESOURCES)/META-INF/g++/copyright
 
 jni: jni-dylib jni-so
 
@@ -101,16 +105,24 @@ $(LIBXGBOOST4J_DYLIB):
 	     CMAKE_POLICY_DEFAULT_CMP0066=NEW \
 	     python create_jni.py~
 
-$(LIBXGBOOST4J_SO): $(RESOURCES_LIB)/libgomp.so
+$(LIBXGBOOST4J_SO): $(RESOURCES)/lib $(RESOURCES)/lib/libgomp.so
 	$(RUN_ON_DOCKER) bash -c "cd xgboost/jvm-packages && python create_jni.py"
 
-$(RESOURCES_METAINF)/g++/copyright:
-	mkdir -p "$(RESOURCES_METAINF)/g++"
-	$(RUN_ON_DOCKER) cp -p /usr/share/doc/g++-6/copyright $(RESOURCES_METAINF)/g++
+$(RESOURCES)/META-INF/g++:
+	mkdir -p $(RESOURCES)/META-INF/g++
 
-$(RESOURCES_METAINF)/xgboost/LICENSE:
-	mkdir -p "$(RESOURCES_METAINF)/xgboost"
-	cp -p xgboost/LICENSE "$(RESOURCES_METAINF)/xgboost"
+$(RESOURCES)/META-INF/g++/copyright: $(RESOURCES)/META-INF/g++
+	mkdir -p "$(RESOURCES)/META-INF/g++"
+	$(RUN_ON_DOCKER) cp -p /usr/share/doc/g++-6/copyright $(RESOURCES)/META-INF/g++
 
-$(RESOURCES_LIB)/libgomp.so:
-	$(RUN_ON_DOCKER) bash -c 'cp -Lpv "$$(gcc --print-file-name libgomp.so)" "$(RESOURCES_LIB)"'
+$(RESOURCES)/META-INF/xgboost:
+	mkdir -p "$(RESOURCES)/META-INF/xgboost"
+
+$(RESOURCES)/META-INF/xgboost/LICENSE: $(RESOURCES)/META-INF/xgboost
+	cp -p xgboost/LICENSE "$(RESOURCES)/META-INF/xgboost"
+
+$(RESOURCES)/lib:
+	mkdir -p "$(RESOURCES)/lib"
+
+$(RESOURCES)/lib/libgomp.so: $(RESOURCES)/lib
+	$(RUN_ON_DOCKER) bash -c 'cp -Lpv "$$(gcc --print-file-name libgomp.so)" "$(RESOURCES)/lib"'

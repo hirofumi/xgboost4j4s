@@ -9,4 +9,4 @@ RUN curl https://bintray.com/sbt/rpm/rpm | tee /etc/yum.repos.d/bintray-sbt-rpm.
 ADD . /root
 WORKDIR /root
 
-CMD ["sbt", "test"]
+CMD ["sbt", "+test"]

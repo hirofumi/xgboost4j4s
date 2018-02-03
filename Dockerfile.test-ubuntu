@@ -11,4 +11,4 @@ RUN echo 'deb http://dl.bintray.com/sbt/debian /' > /etc/apt/sources.list.d/sbt.
 ADD . /root
 WORKDIR /root
 
-CMD ["sbt", "test"]
+CMD ["sbt", "+test"]
