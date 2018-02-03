@@ -3,7 +3,18 @@
 [![Build Status](https://travis-ci.org/hirofumi/xgboost4j4s.svg?branch=master)](https://travis-ci.org/hirofumi/xgboost4j4s)
 [![Scaladex](https://maven-badges.herokuapp.com/maven-central/com.github.hirofumi/xgboost4j_2.11/badge.svg)](https://index.scala-lang.org/hirofumi/xgboost4j4s/xgboost4j)
 
-XGBoost4J with cross-version suffix
+[XGBoost4J](https://xgboost.readthedocs.io/en/latest/jvm/index.html) with cross-version suffix
+
+## Usage
+
+```sbt
+// available for Scala 2.11 and 2.12
+libraryDependencies += "com.github.hirofumi" %% "xgboost4j" % "0.7.0-p2" 
+
+// available for Scala 2.11
+libraryDependencies += "com.github.hirofumi" %% "xgboost4j-flink" % "0.7.0-p2"
+libraryDependencies += "com.github.hirofumi" %% "xgboost4j-spark" % "0.7.0-p2"
+```
 
 ## Development
 
