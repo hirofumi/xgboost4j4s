@@ -1,5 +1,6 @@
 # xgboost4j4s
 
+[![Build Status](https://travis-ci.org/hirofumi/xgboost4j4s.svg?branch=master)](https://travis-ci.org/hirofumi/xgboost4j4s)
 [![Scaladex](https://maven-badges.herokuapp.com/maven-central/com.github.hirofumi/xgboost4j_2.11/badge.svg)](https://index.scala-lang.org/hirofumi/xgboost4j4s/xgboost4j)
 
 XGBoost4J with cross-version suffix
