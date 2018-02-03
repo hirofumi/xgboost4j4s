@@ -10,6 +10,7 @@ XGBoost4J with cross-version suffix
 
 * macOS
 * Docker for Mac
+* Ninja
 * `g++-7` (installed by Homebrew, i.e. `brew install gcc`)
 
 ### How to Build and Test

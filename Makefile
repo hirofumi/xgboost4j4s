@@ -99,6 +99,7 @@ $(LIBXGBOOST4J_DYLIB):
 	cd xgboost/jvm-packages \
 	  && cat create_jni.py \
 	     | sed -e 's!CONFIG\["USE_OPENMP"\] = "OFF"!CONFIG["USE_OPENMP"] = "ON"!' \
+	     | sed -e 's!maybe_generator = ""!maybe_generator = " -GNinja"!' \
 	     | sed -e 's!join(args)!join(args + ["-DOpenMP_'$(LIBGOMP_A)'_LIBRARY='$(LIBGOMP_A)'"])!' \
 	     > create_jni.py~ \
 	  && CC=$(CC) CXX=$(CXX) CFLAGS=$(CFLAGS) CXXFLAGS=$(CXXFLAGS) \
