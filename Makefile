@@ -33,7 +33,7 @@ CACHE_VOLUMES=$(COURSIER_CACHE_VOLUME) $(IVY2_CACHE_VOLUME) $(SBT_CACHE_VOLUME)
 test: test-mac test-linux
 
 test-mac: jni-dylib
-	LC_NUMERIC=C sbt +test
+	sbt +test
 
 test-linux: test-fedora test-ubuntu
 
