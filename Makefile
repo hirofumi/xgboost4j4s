@@ -2,7 +2,7 @@ GCC_HOME=/usr/local/opt/gcc
 GCC_VERSION=7
 CC="$(GCC_HOME)/bin/gcc-$(GCC_VERSION)"
 CXX="$(GCC_HOME)/bin/g++-$(GCC_VERSION)"
-CFLAGS="-fvisibility=hidden -static-libgcc -I$(GCC_HOME)/include"
+CFLAGS="-fvisibility=hidden -static-libgcc"
 CXXFLAGS="-fvisibility=hidden -fvisibility-inlines-hidden -static-libgcc -static-libstdc++"
 LIBGOMP_A="$$(cd $$(dirname $$($(CXX) -print-file-name=libgomp.a)); pwd)/libgomp.a"
 RESOURCES=xgboost/jvm-packages/xgboost4j/src/main/resources
@@ -101,7 +101,7 @@ $(LIBXGBOOST4J_DYLIB):
 	     | sed -e 's!CONFIG\["USE_OPENMP"\] = "OFF"!CONFIG["USE_OPENMP"] = "ON"!' \
 	     | sed -e 's!join(args)!join(args + ["-DOpenMP_'$(LIBGOMP_A)'_LIBRARY='$(LIBGOMP_A)'"])!' \
 	     > create_jni.py~ \
-	  && CC=$(CC) CXX=$(CXX) LDFLAGS=$(LDFLAGS) CXXFLAGS=$(CXXFLAGS) \
+	  && CC=$(CC) CXX=$(CXX) CFLAGS=$(CFLAGS) CXXFLAGS=$(CXXFLAGS) \
 	     CMAKE_POLICY_DEFAULT_CMP0066=NEW \
 	     python create_jni.py~
 
