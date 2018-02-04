@@ -83,7 +83,7 @@ clean-so:
 	-rm "$(RESOURCES)/lib/libgomp.so"
 	-rm "$(LIBXGBOOST4J_SO)"
 
-doc: $(RESOURCES)/META-INF/xgboost/LICENSE $(RESOURCES)/META-INF/g++/copyright
+doc: $(RESOURCES)/META-INF/xgboost/LICENSE $(RESOURCES)/META-INF/gcc-runtime/copyright
 
 jni: jni-dylib jni-so
 
@@ -105,12 +105,12 @@ $(LIBXGBOOST4J_DYLIB):
 $(LIBXGBOOST4J_SO): $(RESOURCES)/lib $(RESOURCES)/lib/libgomp.so
 	$(RUN_ON_DOCKER) bash -c "cd xgboost/jvm-packages && python create_jni.py"
 
-$(RESOURCES)/META-INF/g++:
-	mkdir -p $(RESOURCES)/META-INF/g++
+$(RESOURCES)/META-INF/gcc-runtime:
+	mkdir -p $(RESOURCES)/META-INF/gcc-runtime
 
-$(RESOURCES)/META-INF/g++/copyright: $(RESOURCES)/META-INF/g++
-	mkdir -p "$(RESOURCES)/META-INF/g++"
-	$(RUN_ON_DOCKER) cp -p /usr/share/doc/g++-6/copyright $(RESOURCES)/META-INF/g++
+$(RESOURCES)/META-INF/gcc-runtime/copyright: $(RESOURCES)/META-INF/gcc-runtime
+	mkdir -p "$(RESOURCES)/META-INF/gcc-runtime"
+	$(RUN_ON_DOCKER) cp -p /usr/share/doc/g++-6/copyright $(RESOURCES)/META-INF/gcc-runtime
 
 $(RESOURCES)/META-INF/xgboost:
 	mkdir -p "$(RESOURCES)/META-INF/xgboost"
