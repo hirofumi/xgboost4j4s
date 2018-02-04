@@ -26,7 +26,7 @@ CACHE_VOLUMES=$(COURSIER_CACHE_VOLUME) $(IVY2_CACHE_VOLUME) $(SBT_CACHE_VOLUME)
   release \
   publish-local publish-snapshot \
   inspect-dylib inspect-so \
-  clean clean-dylib clean-so \
+  clean clean-doc clean-dylib clean-so \
   doc \
   jni jni-dylib jni-so
 
