@@ -1,6 +1,5 @@
 import PgpKeys._
 import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
-import scala.sys.process._
 import xerial.sbt.Sonatype._
 
 lazy val `xgboost-jvm` =
@@ -13,11 +12,6 @@ lazy val `xgboost-jvm` =
       `xgboost4j-spark`
     )
     .settings(settings ++ notToPublish)
-    .settings(
-      makeClean := "make clean".!,
-      makeDoc   := "make doc".!,
-      makeTest  := "make test".!
-    )
     .settings(
       releaseCrossBuild :=
         true,
@@ -139,8 +133,3 @@ lazy val toPublish =
 
 lazy val akkaVersion = settingKey[String]("akka version")
 lazy val isScala211  = settingKey[Boolean]("whether or not scalaBinaryVersion is 2.11")
-
-lazy val makeClean = taskKey[Int]("make clean")
-lazy val makeDoc   = taskKey[Int]("make doc")
-lazy val makeJni   = taskKey[Int]("make jni")
-lazy val makeTest  = taskKey[Int]("make test")

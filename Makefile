@@ -39,14 +39,10 @@ test-linux: test-fedora test-ubuntu
 
 test-fedora: jni-so
 	docker build . -f Dockerfile.test-fedora -t xgboost4j4s-test-fedora
-	ls -lat "$(RESOURCES)"
-	ls -lat "$(RESOURCES)/lib"
 	docker run --rm $(CACHE_VOLUMES) -i xgboost4j4s-test-fedora
 
 test-ubuntu: jni-so
 	docker build . -f Dockerfile.test-ubuntu -t xgboost4j4s-test-ubuntu
-	ls -lat "$(RESOURCES)"
-	ls -lat "$(RESOURCES)/lib"
 	docker run --rm $(CACHE_VOLUMES) -i xgboost4j4s-test-ubuntu
 
 release: clean doc jni
