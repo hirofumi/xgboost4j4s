@@ -13,17 +13,16 @@ lazy val `xgboost-jvm` =
     )
     .settings(settings ++ notToPublish)
     .settings(
-      releaseCrossBuild :=
-        true,
       releaseProcess := Seq[ReleaseStep](
         checkSnapshotDependencies,
         inquireVersions,
-        runClean,
-        runTest,
+        releaseStepCommandAndRemaining("+clean"),
+        releaseStepCommandAndRemaining("+doc"),
+        releaseStepCommandAndRemaining("+test"),
         setReleaseVersion,
         commitReleaseVersion,
         tagRelease,
-        releaseStepCommand("publishSigned"),
+        releaseStepCommandAndRemaining("+publishSigned"),
         setNextVersion,
         commitNextVersion,
         releaseStepCommand("sonatypeReleaseAll"),
