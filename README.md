@@ -18,8 +18,10 @@ libraryDependencies += "com.github.hirofumi" %% "xgboost4j-spark" % "0.7.0-p2"
 
 ### Note
 
-You should use the above libraries with `LC_NUMERIC=C` (which is not overridden by `LC_ALL`) on macOS.
-Otherwise multi-threading may cause a segmentation fault.
+* You should use the above libraries with `LC_NUMERIC=C` (which is not overridden by `LC_ALL`) on macOS.
+  Otherwise multi-threading may cause a segmentation fault.
+* This library contains some GCC runtime libraries and I think GCC Runtime Library Exception can be applied.
+  But I am not a lawyer.
 
 ## Development
 
