@@ -30,7 +30,7 @@ libraryDependencies += "com.github.hirofumi" %% "xgboost4j-spark" % "0.7.0-p2"
 * macOS
 * Docker for Mac
 * Ninja
-* `g++-7` (installed by Homebrew, i.e. `brew install gcc`)
+* `g++-7` (installed by Homebrew, i.e. `brew install gcc@7`)
 
 ### How to Build and Test
 
