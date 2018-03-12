@@ -111,7 +111,7 @@ lazy val settings =
       "org.scalatest"             %% "scalatest"       % "3.0.0" % Test
     ),
     sonatypeProjectHosting := Some(
-      GithubHosting("hirofumi", "xgboost4j4s", "hirofummy@gmail.com")
+      GitHubHosting("hirofumi", "xgboost4j4s", "hirofummy@gmail.com")
     )
   )
 
