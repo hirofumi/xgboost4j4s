@@ -35,7 +35,7 @@ lazy val xgboost4j =
     .in(file("xgboost/jvm-packages/xgboost4j"))
     .settings(settings ++ toPublish)
     .settings(
-      crossScalaVersions += "2.12.4"
+      crossScalaVersions += "2.12.6"
     )
     .settings(
       libraryDependencies ++= Seq(
