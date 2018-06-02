@@ -135,4 +135,4 @@ lazy val toPublish =
 lazy val akkaVersion = settingKey[String]("akka version")
 lazy val isScala211  = settingKey[Boolean]("whether or not scalaBinaryVersion is 2.11")
 
-lazy val sparkVersion = "2.2.1"
+lazy val sparkVersion = "2.3.0"
