@@ -55,7 +55,7 @@ lazy val `xgboost4j-example` =
     )
     .settings(
       libraryDependencies ++= Seq(
-        "org.apache.spark" %% "spark-mllib" % "2.1.0" % Provided
+        "org.apache.spark" %% "spark-mllib" % sparkVersion % Provided
       )
     )
 
@@ -83,7 +83,9 @@ lazy val `xgboost4j-spark` =
     )
     .settings(
       libraryDependencies ++= Seq(
-        "org.apache.spark" %% "spark-mllib" % "2.1.0" % Provided
+        "org.apache.spark" %% "spark-core"  % sparkVersion % Provided,
+        "org.apache.spark" %% "spark-mllib" % sparkVersion % Provided,
+        "org.apache.spark" %% "spark-sql"   % sparkVersion % Provided
       )
     )
 
@@ -132,3 +134,5 @@ lazy val toPublish =
 
 lazy val akkaVersion = settingKey[String]("akka version")
 lazy val isScala211  = settingKey[Boolean]("whether or not scalaBinaryVersion is 2.11")
+
+lazy val sparkVersion = "2.2.1"
