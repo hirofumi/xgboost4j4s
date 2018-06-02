@@ -9,11 +9,11 @@
 
 ```sbt
 // available for Scala 2.11 and 2.12
-libraryDependencies += "com.github.hirofumi" %% "xgboost4j" % "0.7.1-p1"
+libraryDependencies += "com.github.hirofumi" %% "xgboost4j" % "0.7.2-p1"
 
 // available for Scala 2.11
-libraryDependencies += "com.github.hirofumi" %% "xgboost4j-flink" % "0.7.1-p1"
-libraryDependencies += "com.github.hirofumi" %% "xgboost4j-spark" % "0.7.1-p1"
+libraryDependencies += "com.github.hirofumi" %% "xgboost4j-flink" % "0.7.2-p1"
+libraryDependencies += "com.github.hirofumi" %% "xgboost4j-spark" % "0.7.2-p1"
 ```
 
 ### Note
