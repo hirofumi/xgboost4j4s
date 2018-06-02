@@ -1,5 +1,5 @@
-GCC_HOME=/usr/local/opt/gcc
 GCC_VERSION=7
+GCC_HOME=/usr/local/opt/gcc@$(GCC_VERSION)
 CC="$(GCC_HOME)/bin/gcc-$(GCC_VERSION)"
 CXX="$(GCC_HOME)/bin/g++-$(GCC_VERSION)"
 CFLAGS="-fvisibility=hidden -static-libgcc"
