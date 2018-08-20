@@ -1,7 +1,7 @@
 # xgboost4j4s
 
 [![Build Status](https://travis-ci.org/hirofumi/xgboost4j4s.svg?branch=master)](https://travis-ci.org/hirofumi/xgboost4j4s)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.hirofumi/xgboost4j_2.11/badge.svg)](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.github.hirofumi%22%20xgboost4j)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.hirofumi/xgboost4j_2.11/badge.svg)](https://search.maven.org/search?q=g:com.github.hirofumi%20xgboost4j)
 
 [XGBoost4J](https://xgboost.readthedocs.io/en/latest/jvm/index.html) with cross-version suffix
 
@@ -9,11 +9,11 @@
 
 ```sbt
 // available for Scala 2.11 and 2.12
-libraryDependencies += "com.github.hirofumi" %% "xgboost4j" % "0.7.2-p1"
+libraryDependencies += "com.github.hirofumi" %% "xgboost4j" % "0.80-p1"
 
 // available for Scala 2.11
-libraryDependencies += "com.github.hirofumi" %% "xgboost4j-flink" % "0.7.2-p1"
-libraryDependencies += "com.github.hirofumi" %% "xgboost4j-spark" % "0.7.2-p1"
+libraryDependencies += "com.github.hirofumi" %% "xgboost4j-flink" % "0.80-p1"
+libraryDependencies += "com.github.hirofumi" %% "xgboost4j-spark" % "0.80-p1"
 ```
 
 ### Note
